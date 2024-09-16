@@ -2,7 +2,7 @@
 // database.php - Configuración de la conexión a MySQL recuerda estoy tomando solo cliente por el momento ok?
 $servername = "localhost";
 $username = "root";  
-$password = "tu_contraseña";  
+$password = "123";  
 $dbname = "mi_db";  
 
 // Crear la conexión

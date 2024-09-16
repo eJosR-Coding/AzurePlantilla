@@ -11,8 +11,8 @@ class AuthController {
 
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
-            // Verificar la contraseña
-            if ($password === $user['password']) {
+            // Verificar la contraseña encriptada
+            if (password_verify($password, $user['password'])) {
                 return ['success' => true];
             } else {
                 return ['success' => false, 'message' => 'Contraseña incorrecta'];
@@ -22,4 +22,5 @@ class AuthController {
         }
     }
 }
+
 ?>

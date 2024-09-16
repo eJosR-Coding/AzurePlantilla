@@ -2,14 +2,17 @@
 include '../config/database.php';
 include '../controllers/AuthController.php';
 
-$data = json_decode(file_get_contents('php://input'), true);
+$data = json_decode(file_get_contents("php://input"), true);
+
 $email = $data['email'];
 $password = $data['password'];
 
-$authController = new AuthController();
-$response = $authController->login($email, $password);
+$auth = new AuthController();
+$result = $auth->login($email, $password);
 
-// Devolver la respuesta en formato JSON
-header('Content-Type: application/json');
-echo json_encode($response);
+if ($result['success']) {
+    echo json_encode(['success' => true]);
+} else {
+    echo json_encode(['success' => false, 'message' => $result['message']]);
+}
 ?>
