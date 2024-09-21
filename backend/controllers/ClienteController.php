@@ -1,12 +1,10 @@
 <?php
-// ClienteController.php
-include '../config/database.php';  // Incluye el archivo de conexión
+include '../config/database.php';
 
 class ClienteController {
-    // Método para obtener todos los clientes
     public function obtenerClientes() {
         global $conn;
-        $sql = "SELECT * FROM Cliente";  // Consulta para obtener todos los clientes
+        $sql = "SELECT * FROM Cliente";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
@@ -17,9 +15,21 @@ class ClienteController {
             echo "No se encontraron clientes.";
         }
     }
-}
 
-// Crear una instancia del controlador y ejecutar el método
-$controller = new ClienteController();
-$controller->obtenerClientes();
+    public function agregarCliente($nombre, $correo, $numero, $segmento) {
+        global $conn;
+        $sql = "INSERT INTO Cliente (nombre, correo_electronico, numero_contacto, segmento) VALUES (?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssss", $nombre, $correo, $numero, $segmento);
+        $stmt->execute();
+    }
+
+    public function eliminarCliente($cliente_id) {
+        global $conn;
+        $sql = "DELETE FROM Cliente WHERE customer_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $cliente_id);
+        $stmt->execute();
+    }
+}
 ?>
