@@ -14,6 +14,7 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
+            // Redirigir según el rol
             if (data.role === 'admin') {
                 window.location.href = '../html/admin_dashboard.html';
             } else {

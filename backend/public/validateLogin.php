@@ -1,17 +1,10 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 include '../config/database.php';
 include '../controllers/AuthController.php';
 
-$data = json_decode(file_get_contents("php://input"), true);
+session_start();
 
-// Verificar si los datos están llegando correctamente
-if (!$data || !isset($data['email']) || !isset($data['password'])) {
-    echo json_encode(['success' => false, 'message' => 'Datos incompletos']);
-    exit();
-}
+$data = json_decode(file_get_contents("php://input"), true);
 
 $email = $data['email'];
 $password = $data['password'];
@@ -19,10 +12,16 @@ $password = $data['password'];
 $auth = new AuthController();
 $result = $auth->login($email, $password);
 
-// Revisar el resultado del login
 if ($result['success']) {
-    // Redirigir según el rol del usuario
-    echo json_encode(['success' => true, 'message' => 'Inicio de sesión exitoso', 'role' => $result['role']]);
+    $_SESSION['user_id'] = $result['user_id'];
+    $_SESSION['rol'] = $result['rol'];
+
+    // Verificar el rol y redirigir al dashboard correspondiente
+    if ($_SESSION['rol'] === 'admin') {
+        echo json_encode(['success' => true, 'role' => 'admin']);
+    } else {
+        echo json_encode(['success' => true, 'role' => 'usuario']);
+    }
 } else {
     echo json_encode(['success' => false, 'message' => $result['message']]);
 }
