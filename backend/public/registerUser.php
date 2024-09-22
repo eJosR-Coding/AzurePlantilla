@@ -11,6 +11,7 @@ $email = $data['email'];
 $password = password_hash($data['password'], PASSWORD_BCRYPT);
 
 
+
 $sql = "INSERT INTO Usuario (nombre, correo_electronico, password, rol, fecha_registro) VALUES (?, ?, ?, 'cliente', NOW())";
 $stmt = $conn->prepare($sql);
 
