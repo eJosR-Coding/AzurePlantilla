@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cliente Dashboard</title>
+    <title>Client Dashboard</title>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
+
 <body>
-    <h1>Bienvenido al Panel de Cliente - ManufacturPRO</h1>
-    <p>Aquí puedes ver tus ventas y producción</p>
-    <div id="datos-ventas">
-        <!-- Mostrar datos de ventas del cliente -->
-    </div>
+    <h1>Panel del Usuario</h1>
+
+    <h2>Mis Pedidos</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Pedido</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="orderTableBody">
+            <!-- Aquí se cargarán los pedidos del usuario -->
+        </tbody>
+    </table>
+
     <script src="../js/cliente_dashboard.js"></script>
 </body>
+
 </html>

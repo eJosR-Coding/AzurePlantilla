@@ -4,16 +4,20 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             const userTable = document.getElementById('userTableBody');
-            data.forEach(user => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${user.nombre}</td>
-                    <td>${user.correo_electronico}</td>
-                    <td>${user.rol}</td>
-                    <td><button class="delete-btn" data-id="${user.user_id}">Eliminar</button></td>
-                `;
-                userTable.appendChild(row);
-            });
+            if (userTable) {
+                data.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.nombre}</td>
+                        <td>${user.correo_electronico}</td>
+                        <td>${user.rol}</td>
+                        <td><button class="delete-btn" data-id="${user.user_id}">Eliminar</button></td>
+                    `;
+                    userTable.appendChild(row);
+                });
+            } else {
+                console.error('El elemento con ID "userTableBody" no existe.');
+            }
         })
         .catch(error => console.error('Error:', error));
 });

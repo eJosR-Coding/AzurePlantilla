@@ -1,18 +1,23 @@
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('../../backend/public/getSales.php')
+    // Solicitar la lista de pedidos del usuario
+    fetch('../../backend/public/getUserOrders.php') // Debe devolver solo los pedidos del usuario actual
         .then(response => response.json())
         .then(data => {
-            const salesTable = document.getElementById('salesTableBody');
-            data.forEach(sale => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${sale.fecha_venta}</td>
-                    <td>${sale.cantidad}</td>
-                    <td>${sale.precio_unitario}</td>
-                    <td>${sale.total_venta}</td>
-                `;
-                salesTable.appendChild(row);
-            });
+            const orderTable = document.getElementById('orderTableBody');
+            if (orderTable) {
+                data.forEach(order => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${order.id}</td>
+                        <td>${order.fecha}</td>
+                        <td>${order.estado}</td>
+                        <td>${order.total}</td>
+                    `;
+                    orderTable.appendChild(row);
+                });
+            } else {
+                console.error('El elemento con ID "orderTableBody" no existe.');
+            }
         })
         .catch(error => console.error('Error:', error));
 });
