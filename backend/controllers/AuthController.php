@@ -1,10 +1,14 @@
 <?php
 class AuthController {
-    public function login($email, $password) {
-        global $conn;
+    private $conn;
 
+    public function __construct($dbConnection) {
+        $this->conn = $dbConnection;
+    }
+
+    public function login($email, $password) {
         $sql = "SELECT * FROM Usuario WHERE correo_electronico = ? LIMIT 1";
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
