@@ -1,14 +1,10 @@
 <?php
 class AuthController {
-    private $conn;
-
-    public function __construct($dbConnection) {
-        $this->conn = $dbConnection;
-    }
-
     public function login($email, $password) {
+        global $conn;
+
         $sql = "SELECT * FROM Usuario WHERE correo_electronico = ? LIMIT 1";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -17,7 +13,8 @@ class AuthController {
             $user = $result->fetch_assoc();
             // Verificar la contraseña encriptada
             if (password_verify($password, $user['password'])) {
-                return ['success' => true];
+                // Agregar rol al resultado
+                return ['success' => true, 'role' => $user['rol']];
             } else {
                 return ['success' => false, 'message' => 'Contraseña incorrecta'];
             }
@@ -26,5 +23,6 @@ class AuthController {
         }
     }
 }
+
 
 ?>
