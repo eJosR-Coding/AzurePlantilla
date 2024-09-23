@@ -13,8 +13,8 @@ class AuthController {
             $user = $result->fetch_assoc();
             // Verificar la contraseña encriptada
             if (password_verify($password, $user['password'])) {
-                // Agregar rol al resultado
-                return ['success' => true, 'role' => $user['rol']];
+                // Devolver los detalles del usuario incluyendo el rol
+                return ['success' => true, 'user_id' => $user['user_id'], 'rol' => $user['rol']];
             } else {
                 return ['success' => false, 'message' => 'Contraseña incorrecta'];
             }

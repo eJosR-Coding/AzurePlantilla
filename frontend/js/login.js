@@ -13,6 +13,8 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
     })
     .then(response => response.json())
     .then(data => {
+        console.log(data); // Agrega este log para verificar qué se está devolviendo
+
         if (data.success) {
             // Redirigir según el rol
             if (data.role === 'admin') {
