@@ -3,8 +3,11 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch('../../backend/public/getUserOrders.php')
         .then(response => response.json())
         .then(data => {
+            console.log(data); // Mostrar el contenido de data en la consola
+            
             const orderTable = document.getElementById('orderTableBody');
-           
+            
+            // Verificar si 'data' es un array
             if (Array.isArray(data)) {
                 if (orderTable) {
                     data.forEach(order => {
