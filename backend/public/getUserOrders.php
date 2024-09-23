@@ -10,21 +10,21 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId = $_SESSION['user_id'];
 
-// Ajusta la consulta según la tabla correcta (en este caso, Venta)
-$sql = "SELECT venta_id AS id, fecha_venta AS fecha, estado, total_venta AS total FROM Venta WHERE usuario_id = ?";
+// Consulta para obtener los registros de producción asociados al usuario actual
+$sql = "SELECT production_id, fecha_produccion, cantidad_producida, producto_id FROM Produccion WHERE usuario_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $userId);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$orders = [];
+$producciones = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $orders[] = $row;
+        $producciones[] = $row;
     }
 }
 
-echo json_encode($orders);
+echo json_encode($producciones);
 $stmt->close();
 $conn->close();
 ?>
