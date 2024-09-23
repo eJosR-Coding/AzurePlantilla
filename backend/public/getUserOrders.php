@@ -4,14 +4,14 @@ include '../config/database.php';
 
 // Verifica que el usuario esté logueado
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode([]);
+    echo json_encode([]); // Devolver un array vacío si no hay usuario logueado
     exit();
 }
 
 $userId = $_SESSION['user_id'];
 
-// Consulta para obtener los pedidos del usuario actual
-$sql = "SELECT id, fecha, estado, total FROM Pedidos WHERE usuario_id = ?";
+// Ajusta la consulta según la tabla correcta (en este caso, Venta)
+$sql = "SELECT venta_id AS id, fecha_venta AS fecha, estado, total_venta AS total FROM Venta WHERE usuario_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $userId);
 $stmt->execute();
