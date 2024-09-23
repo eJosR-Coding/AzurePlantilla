@@ -4,14 +4,14 @@ include '../config/database.php';
 
 // Verifica que el usuario esté logueado
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Usuario no autenticado']);
+    echo json_encode([]);
     exit();
 }
 
 $userId = $_SESSION['user_id'];
 
 // Consulta para obtener los pedidos del usuario actual
-$sql = "SELECT * FROM Pedidos WHERE usuario_id = ?";
+$sql = "SELECT id, fecha, estado, total FROM Pedidos WHERE usuario_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $userId);
 $stmt->execute();
