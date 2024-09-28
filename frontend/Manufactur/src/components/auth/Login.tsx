@@ -1,79 +1,89 @@
-import { useState, FormEvent } from 'react';
-import { Container, TextField, Button, Typography, Box, Paper, Alert } from '@mui/material';
+import { useState } from 'react';
+import { Container, TextField, Button, Typography, Alert, Box, Paper } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
-  // Estados locales para los inputs y el mensaje de error
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  // Manejar el envío del formulario
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    // Lógica para enviar los datos de inicio de sesión al servidor
-    fetch('../../backend/public/login.php', {
+
+    fetch('../../backend/public/validateLogin.php', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password }),
     })
-    .then(response => response.json())
-    .then(data => {
-      // Manejar la respuesta de la API
-      if (data.success) {
-        // Redirigir al usuario o mostrar un mensaje de éxito
-      } else {
-        // Mostrar el mensaje de error si no fue exitoso
-        setErrorMessage(data.message || 'Error al iniciar sesión.');
-      }
-    })
-    .catch(() => setErrorMessage('Ocurrió un error. Por favor, inténtalo de nuevo.'));
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          if (data.role === 'admin') {
+            window.location.href = '/admin-dashboard';
+          } else {
+            window.location.href = '/client-dashboard';
+          }
+        } else {
+          setErrorMessage('Credenciales incorrectas');
+        }
+      })
+      .catch(() => setErrorMessage('Ocurrió un error al iniciar sesión.'));
   };
 
   return (
-    <Container maxWidth="xs" sx={{ mt: 8 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
-        <Typography variant="h4" component="h1" align="center" gutterBottom>
-          ManufacturPRO
-        </Typography>
-        <Typography variant="h6" component="h2" align="center" gutterBottom>
-          Iniciar Sesión
-        </Typography>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: '#f0f0f0',
+      }}
+    >
+      {/* Botón para regresar al Landing fuera del Paper */}
+      <Box sx={{ position: 'absolute', top: 16, left: 16 }}>
+        <Button component={Link} to="/" variant="outlined" color="primary">
+          Volver al Inicio
+        </Button>
+      </Box>
 
-        {/* Mostrar mensaje de error si existe */}
-        {errorMessage && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {errorMessage}
-          </Alert>
-        )}
-
-        <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <TextField
-            label="Correo Electrónico"
-            variant="outlined"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            fullWidth
-          />
-          <TextField
-            label="Contraseña"
-            variant="outlined"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            fullWidth
-          />
-          <Button type="submit" variant="contained" color="primary" fullWidth>
+      <Container maxWidth="xs">
+        <Paper elevation={3} sx={{ padding: 4 }}>
+          <Typography variant="h4" align="center" gutterBottom>
+            ManufacturPRO
+          </Typography>
+          <Typography variant="h6" align="center" gutterBottom>
             Iniciar Sesión
-          </Button>
-        </Box>
-      </Paper>
-    </Container>
+          </Typography>
+          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+            <TextField
+              label="Correo Electrónico"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              label="Contraseña"
+              type="password"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+              Iniciar Sesión
+            </Button>
+          </Box>
+        </Paper>
+      </Container>
+    </Box>
   );
 };
 

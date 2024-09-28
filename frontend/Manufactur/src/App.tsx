@@ -1,5 +1,9 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Importando React Router
+import Landing from './components/Landing';
+import AdminDashboard from './components/Admindashboard'
+import ClientDashboard from './components/ClientDashboard';
+import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 
 // 1. Crea un tema personalizado (opcional, puedes usar `createTheme()` sin parámetros si no deseas personalizarlo)
@@ -22,10 +26,17 @@ const App = () => {
   return (
     // Proporciona el tema a través del `ThemeProvider`
     <ThemeProvider theme={theme}>
-      <CssBaseline /> {/* Opcional para un reinicio de estilos global */}
-      
-      {/* Componente de Login */}
-      <Login />
+      {/* Envolvemos la aplicación en `Router` para manejar rutas */}
+      <Router>
+        {/* Define las rutas de tu aplicación */}
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/client-dashboard" element={<ClientDashboard />} />
+        </Routes>
+      </Router>
     </ThemeProvider>
   );
 };
