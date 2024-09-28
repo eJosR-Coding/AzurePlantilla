@@ -108,7 +108,5 @@ const AdminDashboard = () => {
 };
 
 // En components/Admindashboard.tsx
-export default function AdminDashboard() {
-    return <div>Admin Dashboard</div>;
-}
+export default AdminDashboard;
 
