@@ -1,7 +1,7 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Importando React Router
 import Landing from './components/Landing';
-import AdminDashboard from './components/Admindashboard'
+import AdminDashboard from './components/AdminDashboard'
 import ClientDashboard from './components/ClientDashboard';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
